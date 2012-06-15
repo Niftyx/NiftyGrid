@@ -842,6 +842,10 @@ class Grid extends \Nette\Application\UI\Control
 					}
 				}
 			}
+			
+			foreach($row as $key => $value) {
+				if($value instanceof \DateTime) $row[$key] = $value->format('Y-m-d H:i:s');
+			}
 			$this['gridForm'][$this->name]['rowForm']->setDefaults($row);
 			$this['gridForm'][$this->name]['rowForm']->addHidden("id", $this->activeRowForm);
 		}
