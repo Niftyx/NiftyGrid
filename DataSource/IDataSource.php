@@ -11,8 +11,6 @@ namespace NiftyGrid;
 
 interface IDataSource
 {
-	public function __construct($data);
-
 	public function getData();
 
 	public function getCount($column = "*");
