@@ -10,13 +10,15 @@
 namespace NiftyGrid;
 
 use NiftyGrid\FilterCondition,
-	Nette\Utils\Strings;
+	Nette\Utils\Strings,
+	Nette\Database\Table\Selection;
 
 class NDataSource implements IDataSource
 {
+	/** @var Selection */
 	private $data;
 
-	public function __construct($data)
+	public function __construct(Selection $data)
 	{
 		$this->data = $data;
 	}
