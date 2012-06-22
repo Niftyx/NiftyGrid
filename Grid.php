@@ -302,8 +302,8 @@ abstract class Grid extends \Nette\Application\UI\Control
 	public function getColsCount()
 	{
 		$count = count($this['columns']->components);
-		$this->hasActionForm() ? $count++ : $count;
-		($this->hasButtons() || $this->hasFilterForm()) ? $count++ : $count;
+		if ($this->hasActionForm()) $count++;
+		if ($this->hasButtons() || $this->hasFilterForm()) $count++;
 		$count += count($this['subGrids']->components);
 
 		return $count;
