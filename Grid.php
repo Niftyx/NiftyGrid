@@ -9,7 +9,9 @@
  */
 namespace NiftyGrid;
 
-class Grid extends \Nette\Application\UI\Control
+use Nette\Application\UI\Presenter;
+
+abstract class Grid extends \Nette\Application\UI\Control
 {
 	const ROW_FORM = "rowForm";
 
@@ -73,6 +75,7 @@ class Grid extends \Nette\Application\UI\Control
 	protected function attached($presenter)
 	{
 		parent::attached($presenter);
+		if ( ! $presenter instanceof Presenter) return;
 
 		$this->addComponent(New \Nette\ComponentModel\Container(), "columns");
 		$this->addComponent(New \Nette\ComponentModel\Container(), "buttons");
@@ -128,6 +131,8 @@ class Grid extends \Nette\Application\UI\Control
 		}
 		$this->count = $this->getCount();
 	}
+
+	abstract protected function configure(\Nette\Application\UI\Presenter $presenter);
 
 	/**
 	 * @param string $subGrid
