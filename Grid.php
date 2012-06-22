@@ -193,7 +193,6 @@ abstract class Grid extends \Nette\Application\UI\Control
 	 * @param null|int $truncate
 	 * @return Column
 	 * @throws DuplicateColumnException
-	 * @return \Nifty\Grid\Column
 	 */
 	protected function addColumn($name, $label = NULL, $width = NULL, $truncate = NULL)
 	{
@@ -290,6 +289,7 @@ abstract class Grid extends \Nette\Application\UI\Control
 	 */
 	public function getColumnNames()
 	{
+		$columns = array();
 		foreach($this['columns']->components as $column){
 			$columns[] = $column->name;
 		}
