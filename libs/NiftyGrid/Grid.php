@@ -859,7 +859,7 @@ abstract class Grid extends \Nette\Application\UI\Control
 			$this->template->viewedFrom = ((($this->getPaginator()->getPage()-1)*$this->perPage)+1);
 			$this->template->viewedTo = ($this->getPaginator()->getLength()+(($this->getPaginator()->getPage()-1)*$this->perPage));
 		}
-		$templatePath = !empty($this->templatePath) ? $this->templatePath : __DIR__."/templates/grid.latte";
+		$templatePath = !empty($this->templatePath) ? $this->templatePath : __DIR__."/../../templates/grid.latte";
 		$this->template->setFile($templatePath);
 		$this->template->render();
 	}

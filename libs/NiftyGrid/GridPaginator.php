@@ -30,7 +30,7 @@ class GridPaginator extends \Nette\Application\UI\Control
 	public function render()
 	{
 		$this->template->paginator = $this->paginator;
-		$this->template->setFile(dirname(__FILE__) . '/templates/paginator.latte');
+		$this->template->setFile(__DIR__ . '/../../templates/paginator.latte');
 		$this->template->render();
 	}
 
