@@ -16,36 +16,36 @@ use NiftyGrid\FilterCondition,
 class NDataSource implements IDataSource
 {
 	/** @var Selection */
-	private $data;
+	private $table;
 
-	public function __construct(Selection $data)
+	public function __construct(Selection $table)
 	{
-		$this->data = $data;
+		$this->table = $table;
 	}
 
 	public function getData()
 	{
-		return $this->data;
+		return $this->table;
 	}
 
 	public function getCount($column = "*")
 	{
-		return $this->data->count($column);
+		return $this->table->count($column);
 	}
 
 	public function getSelectedRowsCount()
 	{
-		return $this->data->count();
+		return $this->table->count();
 	}
 
 	public function orderData($by, $way)
 	{
-		$this->data->order($by." ".$way);
+		$this->table->order($by." ".$way);
 	}
 
 	public function limitData($limit, $offset)
 	{
-		$this->data->limit($limit, $offset);
+		$this->table->limit($limit, $offset);
 	}
 
 	public function filterData(array $filters)
@@ -61,7 +61,7 @@ class NDataSource implements IDataSource
 				if(!empty($filter["valueFunction"])){
 					$column .= $filter["valueFunction"]."(?)";
 				}
-				$this->data->where($column, $value);
+				$this->table->where($column, $value);
 			}elseif($filter["type"] == FilterCondition::HAVING){
 				$having[$filter["column"]] = $filter;
 			}
@@ -80,7 +80,7 @@ class NDataSource implements IDataSource
 					$stringHaving .= " AND ";
 				}
 			}
-			$this->data->group("id", $stringHaving);
+			$this->table->group("id", $stringHaving);
 		}
 	}
 }
