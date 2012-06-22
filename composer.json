@@ -14,6 +14,7 @@
 		"nette/nette" : "*"
 	},
 	"autoload": {
-		"psr-0": { "NiftyGrid": "libs/" }
+		"psr-0": { "NiftyGrid": "libs/" },
+		"classmap": [ "libs/NiftyGrid/GridExceptions.php" ]
 	}
 }
