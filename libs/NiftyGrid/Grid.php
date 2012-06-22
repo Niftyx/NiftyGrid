@@ -11,7 +11,7 @@ namespace NiftyGrid;
 
 use Nette\Application\UI\Presenter;
 
-abstract class Grid extends \Nette\Application\UI\Control
+class Grid extends \Nette\Application\UI\Control
 {
 	const ROW_FORM = "rowForm";
 
@@ -69,6 +69,19 @@ abstract class Grid extends \Nette\Application\UI\Control
 	/** @var string */
 	protected $templatePath;
 
+
+
+	function __construct()
+	{
+		parent::__construct();
+
+		$this->addComponent(New \Nette\ComponentModel\Container(), "columns");
+		$this->addComponent(New \Nette\ComponentModel\Container(), "buttons");
+		$this->addComponent(New \Nette\ComponentModel\Container(), "actions");
+		$this->addComponent(New \Nette\ComponentModel\Container(), "subGrids");
+	}
+
+
 	/**
 	 * @param \Nette\Application\UI\Presenter $presenter
 	 */
@@ -76,11 +89,6 @@ abstract class Grid extends \Nette\Application\UI\Control
 	{
 		parent::attached($presenter);
 		if ( ! $presenter instanceof Presenter) return;
-
-		$this->addComponent(New \Nette\ComponentModel\Container(), "columns");
-		$this->addComponent(New \Nette\ComponentModel\Container(), "buttons");
-		$this->addComponent(New \Nette\ComponentModel\Container(), "actions");
-		$this->addComponent(New \Nette\ComponentModel\Container(), "subGrids");
 
 		if($presenter->isAjax()){
 			$this->invalidateControl();
@@ -132,7 +140,10 @@ abstract class Grid extends \Nette\Application\UI\Control
 		$this->count = $this->getCount();
 	}
 
-	abstract protected function configure(\Nette\Application\UI\Presenter $presenter);
+	protected function configure(Presenter $presenter)
+	{
+		// should be overridden
+	}
 
 	/**
 	 * @param string $subGrid
@@ -194,7 +205,7 @@ abstract class Grid extends \Nette\Application\UI\Control
 	 * @return Components\Column
 	 * @throws DuplicateColumnException
 	 */
-	protected function addColumn($name, $label = NULL, $width = NULL, $truncate = NULL)
+	public function addColumn($name, $label = NULL, $width = NULL, $truncate = NULL)
 	{
 		if(!empty($this['columns']->components[$name])){
 			throw new DuplicateColumnException("Column $name already exists.");
@@ -214,7 +225,7 @@ abstract class Grid extends \Nette\Application\UI\Control
 	 * @return Components\Button
 	 * @throws DuplicateButtonException
 	 */
-	protected function addButton($name, $label = NULL)
+	public function addButton($name, $label = NULL)
 	{
 		if($name == self::ROW_FORM){
 			$button = new Components\Button($this['buttons'], $name);
@@ -312,7 +323,7 @@ abstract class Grid extends \Nette\Application\UI\Control
 	/**
 	 * @param DataSource\IDataSource $dataSource
 	 */
-	protected function setDataSource(DataSource\IDataSource $dataSource)
+	public function setDataSource(DataSource\IDataSource $dataSource)
 	{
 		$this->dataSource = $dataSource;
 	}
