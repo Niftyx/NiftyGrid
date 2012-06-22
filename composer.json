@@ -1,0 +1,19 @@
+{
+	"name": "nifty/nifty-grid",
+	"description": "Simple & lightweight datagrid for nette",
+	"keywords": ["datagrid", "nette"],
+	"homepage": "http://addons.nette.org/cs/niftygrid",
+	"license": ["BSD-3"],
+	"authors": [
+		{
+			"name": "Jakub Holub"
+		}
+	],
+	"require": {
+		"php" : ">=5.3.2",
+		"nette/nette" : "*"
+	},
+	"autoload": {
+		"psr-0": { "NiftyGrid": "libs/" }
+	}
+}
