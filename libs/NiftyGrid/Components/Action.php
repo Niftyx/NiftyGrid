@@ -7,7 +7,11 @@
  * @license     New BSD Licence
  * @link        http://addons.nette.org/cs/niftygrid
  */
-namespace NiftyGrid;
+
+namespace NiftyGrid\Components;
+
+use NiftyGrid;
+use Nette;
 
 class Action extends \Nette\Application\UI\PresenterComponent
 {
@@ -77,14 +81,14 @@ class Action extends \Nette\Application\UI\PresenterComponent
 
 	/**
 	 * @return mixed
-	 * @throws UnknownActionCallbackException
+	 * @throws NiftyGrid\UnknownActionCallbackException
 	 */
 	public function getAction()
 	{
 		if(empty($this->callback)){
-			throw new UnknownActionCallbackException("Action $this->name doesn't have callback.");
+			throw new NiftyGrid\UnknownActionCallbackException("Action $this->name doesn't have callback.");
 		}
-		$option = \Nette\Utils\Html::el('option')->setValue($this->name)->setText($this->label);
+		$option = Nette\Utils\Html::el('option')->setValue($this->name)->setText($this->label);
 		if(!empty($this->dialog)){
 			$option->addData("grid-confirm", $this->dialog);
 		}

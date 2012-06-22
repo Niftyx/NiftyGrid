@@ -39,7 +39,7 @@ abstract class Grid extends \Nette\Application\UI\Control
 	/** @var string */
 	protected $defaultOrder;
 
-	/** @var IDataSource */
+	/** @var DataSource\IDataSource */
 	protected $dataSource;
 
 	/** @var int */
@@ -191,7 +191,7 @@ abstract class Grid extends \Nette\Application\UI\Control
 	 * @param null|string $label
 	 * @param null|string $width
 	 * @param null|int $truncate
-	 * @return Column
+	 * @return Components\Column
 	 * @throws DuplicateColumnException
 	 */
 	protected function addColumn($name, $label = NULL, $width = NULL, $truncate = NULL)
@@ -199,7 +199,7 @@ abstract class Grid extends \Nette\Application\UI\Control
 		if(!empty($this['columns']->components[$name])){
 			throw new DuplicateColumnException("Column $name already exists.");
 		}
-		$column = new Column($this['columns'], $name);
+		$column = new Components\Column($this['columns'], $name);
 		$column->setName($name)
 			->setLabel($label)
 			->setWidth($width)
@@ -211,13 +211,13 @@ abstract class Grid extends \Nette\Application\UI\Control
 
 	/**
 	 * @param string $name
-	 * @return Button
+	 * @return Components\Button
 	 * @throws DuplicateButtonException
 	 */
 	protected function addButton($name, $label = NULL)
 	{
 		if($name == self::ROW_FORM){
-			$button = new Button($this['buttons'], $name);
+			$button = new Components\Button($this['buttons'], $name);
 			$self = $this;
 			$button->setLink(function($row) use($self){
 				return $self->link("showRowForm!", $row['id']);
@@ -226,7 +226,7 @@ abstract class Grid extends \Nette\Application\UI\Control
 			if(!empty($this['buttons']->components[$name])){
 				throw new DuplicateButtonException("Button $name already exists.");
 			}
-			$button = new Button($this['buttons'], $name);
+			$button = new Components\Button($this['buttons'], $name);
 		}
 		$button->setLabel($label);
 		return $button;
@@ -235,7 +235,7 @@ abstract class Grid extends \Nette\Application\UI\Control
 	/**
 	 * @param string $name
 	 * @param null|string $label
-	 * @return Action
+	 * @return Components\Action
 	 * @throws DuplicateActionException
 	 */
 	public function addAction($name, $label = NULL)
@@ -243,7 +243,7 @@ abstract class Grid extends \Nette\Application\UI\Control
 		if(!empty($this['actions']->components[$name])){
 			throw new DuplicateActionException("Action $name already exists.");
 		}
-		$action = new Action($this['actions'], $name);
+		$action = new Components\Action($this['actions'], $name);
 		$action->setName($name)
 			->setLabel($label);
 
@@ -253,7 +253,7 @@ abstract class Grid extends \Nette\Application\UI\Control
 	/**
 	 * @param string $name
 	 * @param null|string $label
-	 * @return SubGrid
+	 * @return Components\SubGrid
 	 * @throws DuplicateSubGridException
 	 */
 	public function addSubGrid($name, $label = NULL)
@@ -262,7 +262,7 @@ abstract class Grid extends \Nette\Application\UI\Control
 			throw new DuplicateSubGridException("SubGrid $name already exists.");
 		}
 		$self = $this;
-		$subGrid = new SubGrid($this['subGrids'], $name);
+		$subGrid = new Components\SubGrid($this['subGrids'], $name);
 		$subGrid->setName($name)
 			->setLabel($label);
 		if($this->activeSubGridName == $name){
@@ -310,9 +310,9 @@ abstract class Grid extends \Nette\Application\UI\Control
 	}
 
 	/**
-	 * @param IDataSource $dataSource
+	 * @param DataSource\IDataSource $dataSource
 	 */
-	protected function setDataSource(IDataSource $dataSource)
+	protected function setDataSource(DataSource\IDataSource $dataSource)
 	{
 		$this->dataSource = $dataSource;
 	}

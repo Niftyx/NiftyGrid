@@ -7,7 +7,12 @@
  * @license     New BSD Licence
  * @link        http://addons.nette.org/cs/niftygrid
  */
-namespace NiftyGrid;
+
+namespace NiftyGrid\Components;
+
+use Nette;
+use NiftyGrid,
+	NiftyGrid\Grid;
 
 class SubGrid extends \Nette\Application\UI\PresenterComponent
 {
@@ -111,7 +116,7 @@ class SubGrid extends \Nette\Application\UI\PresenterComponent
 
 	/**
 	 * @param callback|string $cellStyle
-	 * @return \Nifty\Grid\SubGrid
+	 * @return SubGrid
 	 */
 	public function setCellStyle($cellStyle)
 	{
