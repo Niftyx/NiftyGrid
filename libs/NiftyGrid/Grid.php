@@ -578,7 +578,7 @@ class Grid extends \Nette\Application\UI\Control
 	 */
 	protected function createComponentPaginator()
 	{
-		return  new GridPaginator;
+		return new GridPaginator;
 	}
 
 	/**
