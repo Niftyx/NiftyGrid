@@ -553,6 +553,7 @@ class Grid extends \Nette\Application\UI\Control
 	 */
 	protected function getCount()
 	{
+		if ( ! $this->dataSource) throw new GridException("DataSource not yet set");
 		if($this->paginate){
 			if($this->hasActiveFilter()){
 				$count = $this->dataSource->getSelectedRowsCount();
