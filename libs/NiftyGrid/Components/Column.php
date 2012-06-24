@@ -12,7 +12,8 @@ namespace NiftyGrid\Components;
 
 use Nette;
 use NiftyGrid,
-	NiftyGrid\Grid;
+	NiftyGrid\Grid,
+	NiftyGrid\FilterCondition;
 
 
 class Column extends \Nette\Application\UI\PresenterComponent
