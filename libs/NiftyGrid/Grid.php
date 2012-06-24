@@ -9,6 +9,7 @@
  */
 namespace NiftyGrid;
 
+use Nette;
 use Nette\Application\UI\Presenter;
 
 class Grid extends \Nette\Application\UI\Control
@@ -41,9 +42,6 @@ class Grid extends \Nette\Application\UI\Control
 
 	/** @var DataSource\IDataSource */
 	protected $dataSource;
-
-	/** @var int */
-	protected $count;
 
 	/** @var string */
 	public $width;
@@ -137,7 +135,6 @@ class Grid extends \Nette\Application\UI\Control
 			$order = explode(" ", $this->defaultOrder);
 			$this->dataSource->orderData($order[0], $order[1]);
 		}
-		$this->count = $this->getCount();
 	}
 
 	protected function configure(Presenter $presenter)
@@ -839,8 +836,7 @@ class Grid extends \Nette\Application\UI\Control
 
 	public function render()
 	{
-		$this->getPaginator()->itemCount = $this->count;
-		$this->template->results = $this->count;
+		$this->template->results = $this->getPaginator()->itemCount = $this->getCount();
 		$this->template->columns = $this['columns']->components;
 		$this->template->buttons = $this['buttons']->components;
 		$this->template->subGrids = $this['subGrids']->components;
