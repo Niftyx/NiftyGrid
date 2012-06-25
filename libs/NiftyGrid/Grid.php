@@ -67,6 +67,8 @@ class Grid extends \Nette\Application\UI\Control
 	/** @var string */
 	protected $templatePath;
 
+	/** @var bool */
+	protected $showCurrentLink = TRUE;
 
 
 	function __construct()
@@ -464,6 +466,20 @@ class Grid extends \Nette\Application\UI\Control
 				return TRUE;
 		}
 		return FALSE;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isCurrentLinkShown()
+	{
+		return $this->showCurrentLink;
+	}
+
+	public function showCurrentLink($show = TRUE)
+	{
+		$this->showCurrentLink = $show;
+		return $this;
 	}
 
 	/**

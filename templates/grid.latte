@@ -17,7 +17,7 @@
 		<tr class="grid-panel">
 			<th colspan="{$colsCount}">
 				<div class="grid-upper-panel">
-					<a n:href="this" class="grid-current-link" title="Získat odkaz na tuto stránku"></a>
+					<a n:if="$control->isCurrentLinkShown()" n:href="this" class="grid-current-link" title="Získat odkaz na tuto stránku"></a>
 					<div class="grid-results">
 						celkem {$results} {($results == 1) ? "záznam" : (($results >= 2 && $results <= 4) ? "záznamy" : "záznamů")}{if $paginate} {if (boolean)$results}(Zobrazeno {$viewedFrom} až {$viewedTo}){/if}{/if}
 					</div>
