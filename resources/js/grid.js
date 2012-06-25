@@ -85,6 +85,7 @@
 
     function setDatepicker()
     {
+        if ( ! $.datepicker ) return; // date picker not present
         $.datepicker.regional['cs'] = {
             closeText: 'Zavřít',
             prevText: '&#x3c;Dříve',
