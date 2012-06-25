@@ -1,17 +1,4 @@
-$(function(){
-    $.ajaxSetup({
-        success: function(data){
-            if(data.redirect){
-                $.get(data.redirect);
-            }
-            if(data.snippets){
-                for (var snippet in data.snippets){
-                    $("#"+snippet).html(data.snippets[snippet]);
-                }
-            }
-        }
-    });
-
+(function($){
     $(".grid-flash-hide").live("click", function(){
         $(this).parent().parent().fadeOut(300);
     });
@@ -98,6 +85,7 @@ $(function(){
 
     function setDatepicker()
     {
+        if ( ! $.datepicker ) return; // date picker not present
         $.datepicker.regional['cs'] = {
             closeText: 'Zavřít',
             prevText: '&#x3c;Dříve',
@@ -144,4 +132,4 @@ $(function(){
     $("table.grid tbody tr:not(.grid-subgrid-row) td.grid-data-cell").live("dblclick", function(e) {
         $(this).parent().find("a.grid-editable:first").click();
     });
-});
+})(jQuery);
