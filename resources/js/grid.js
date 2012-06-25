@@ -1,4 +1,4 @@
-$(function(){
+(function($){
     $(".grid-flash-hide").live("click", function(){
         $(this).parent().parent().fadeOut(300);
     });
@@ -131,4 +131,4 @@ $(function(){
     $("table.grid tbody tr:not(.grid-subgrid-row) td.grid-data-cell").live("dblclick", function(e) {
         $(this).parent().find("a.grid-editable:first").click();
     });
-});
+})(jQuery);
