@@ -1,17 +1,4 @@
 $(function(){
-    $.ajaxSetup({
-        success: function(data){
-            if(data.redirect){
-                $.get(data.redirect);
-            }
-            if(data.snippets){
-                for (var snippet in data.snippets){
-                    $("#"+snippet).html(data.snippets[snippet]);
-                }
-            }
-        }
-    });
-
     $(".grid-flash-hide").live("click", function(){
         $(this).parent().parent().fadeOut(300);
     });
