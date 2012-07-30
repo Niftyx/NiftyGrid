@@ -13,6 +13,9 @@ class Grid extends \Nette\Application\UI\Control
 {
 	const ROW_FORM = "rowForm";
 
+	/** @var \Nette\Localization\ITranslator */
+	protected $translator;
+
 	/** @persistent array */
 	public $filter;
 
@@ -672,6 +675,8 @@ class Grid extends \Nette\Application\UI\Control
 			->addData("gridname", $this->getGridPath())
 			->addData("link", $this->link("changePerPage!"));
 		$form[$this->name]['perPage']->addSubmit("send","Ok")->getControlPrototype()->addClass("grid-perpagesubmit");
+		
+		$form->setTranslator($this->getTranslator());
 
 		$form->onSuccess[] = callback($this, "processGridForm");
 
@@ -854,7 +859,31 @@ class Grid extends \Nette\Application\UI\Control
 			$this->template->viewedTo = ($this->getPaginator()->getLength()+(($this->getPaginator()->getPage()-1)*$this->perPage));
 		}
 		$templatePath = !empty($this->templatePath) ? $this->templatePath : __DIR__."/templates/grid.latte";
+		if ($this->getTranslator() instanceof \Nette\Localization\ITranslator) {
+		    //Put translator into template
+                    $this->template->setTranslator($this->getTranslator());
+		}
 		$this->template->setFile($templatePath);
 		$this->template->render();
 	}
+
+        /**	 
+	 * @param ITranslator $translator
+	 * @return Grid
+	 */
+	public function setTranslator(\Nette\Localization\ITranslator $translator)
+	{
+		$this->translator = $translator;
+		return $this;
+	}
+        
+        /**	 
+	 * @param ITranslator $translator
+	 * @return Grid
+	 */
+	public function getTranslator()
+	{
+		if($this->translator instanceof \Nette\Localization\ITranslator) return $this->translator;
+                return null;
+	}   
 }
