@@ -13,7 +13,8 @@
 	"require": {
 		"php" : ">=5.3.2",
 		"nette/nette" : "*",
-		"nette/addon-installer": "@dev"
+		"nette/addon-installer": "@dev",
+		"nette/extras": "@dev"
 	},
 	"autoload": {
 		"psr-0": { "NiftyGrid": "libs/" },
@@ -24,7 +25,8 @@
 			"assets": {
 				"css": [ "resources/css/" ],
 				"javascript": [ "resources/js/" ]
-			}
+			},
+			"extras": [ "jQuery", "jQuery-UI", "netteForms" ]
 		}
 	}
 }
