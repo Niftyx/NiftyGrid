@@ -23,8 +23,9 @@
 	"extra": {
 		"nette-addon": {
 			"assets": {
-				"css": [ "resources/css/" ],
-				"javascript": [ "resources/js/" ]
+				"images": [ "resources/css/images/" ],
+				"css": [ "resources/css/grid.css" ],
+				"javascript": [ "resources/js/grid.js" ]
 			},
 			"extras": [ "jQuery", "jQuery-UI", "netteForms" ]
 		}
