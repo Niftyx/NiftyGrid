@@ -482,11 +482,11 @@ class Grid extends \Nette\Application\UI\Control
 			$filters = array();
 			foreach($this->filter as $name => $value){
 				if(!$this->columnExists($name)){
-					throw new UnknownColumnException("Neexistující sloupec $name");
+					throw new UnknownColumnException("Unknown column $name");
 
 				}
 				if(!$this['columns-'.$name]->hasFilter()){
-					throw new UnknownFilterException("Neexistující filtr pro sloupec $name");
+					throw new UnknownFilterException("Unknown filter for column $name");
 				}
 
 				$type = $this['columns-'.$name]->getFilterType();
@@ -501,10 +501,10 @@ class Grid extends \Nette\Application\UI\Control
 						}
 						$filters[] = $filter;
 					}else{
-						throw new InvalidFilterException("Neplatný filtr");
+						throw new InvalidFilterException("Invalid filter");
 					}
 				}else{
-					throw new InvalidFilterException("Neplatný filtr");
+					throw new InvalidFilterException("Invalid filter");
 				}
 			}
 			return $this->dataSource->filterData($filters);
@@ -530,7 +530,7 @@ class Grid extends \Nette\Application\UI\Control
 			if(in_array($order[0], $this->getColumnNames()) && in_array($order[1], array("ASC", "DESC")) && $this['columns']->components[$order[0]]->isSortable()){
 				$this->dataSource->orderData($order[0], $order[1]);
 			}else{
-				throw new InvalidOrderException("Neplatné seřazení.");
+				throw new InvalidOrderException("Invalid order.");
 			}
 		}
 		catch(InvalidOrderException $e){
@@ -653,20 +653,20 @@ class Grid extends \Nette\Application\UI\Control
 		$form->addContainer($this->name);
 
 		$form[$this->name]->addContainer("rowForm");
-		$form[$this->name]['rowForm']->addSubmit("send","Uložit");
+		$form[$this->name]['rowForm']->addSubmit("send","Save");
 		$form[$this->name]['rowForm']['send']->getControlPrototype()->addClass("grid-editable");
 
 		$form[$this->name]->addContainer("filter");
-		$form[$this->name]['filter']->addSubmit("send","Filtrovat");
+		$form[$this->name]['filter']->addSubmit("send","Filter");
 
 		$form[$this->name]->addContainer("action");
-		$form[$this->name]['action']->addSelect("action_name","Označené:");
-		$form[$this->name]['action']->addSubmit("send","Potvrdit")
+		$form[$this->name]['action']->addSelect("action_name","Mark:");
+		$form[$this->name]['action']->addSubmit("send","Confirm")
 			->getControlPrototype()
 			->addData("select", $form[$this->name]["action"]["action_name"]->getControl()->name);
 
 		$form[$this->name]->addContainer('perPage');
-		$form[$this->name]['perPage']->addSelect("perPage","Záznamů na stranu:", $this->perPageValues)
+		$form[$this->name]['perPage']->addSelect("perPage","Records per page:", $this->perPageValues)
 			->getControlPrototype()
 			->addClass("grid-changeperpage")
 			->addData("gridname", $this->getGridPath())
@@ -769,9 +769,9 @@ class Grid extends \Nette\Application\UI\Control
 		}
 		catch(NoRowSelectedException $e){
 			if($subGrid){
-				$this[$gridName]->flashMessage("Nebyl vybrán žádný záznam.","grid-error");
+				$this[$gridName]->flashMessage("No record selected","grid-error");
 			}else{
-				$this->flashMessage("Nebyl vybrán žádný záznam.","grid-error");
+				$this->flashMessage("No record selected","grid-error");
 			}
 			$this->redirect("this");
 		}
