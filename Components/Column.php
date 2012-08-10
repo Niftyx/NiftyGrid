@@ -329,10 +329,10 @@ class Column extends \Nette\Application\UI\PresenterComponent
 	/**
 	 * @return Column
 	 */
-	public function setTextFilter()
+	public function setTextFilter($exact = FALSE)
 	{
 		$this->parent['gridForm'][$this->parent->name]['filter']->addText($this->name, $this->label.":");
-		$this->filterType = FilterCondition::TEXT;
+		$this->filterType = ($exact === FALSE) ? (FilterCondition::TEXT) : (FilterCondition::EQUAL);
 
 		return $this;
 	}

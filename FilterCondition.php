@@ -95,8 +95,8 @@ class FilterCondition extends \Nette\Object
 	 */
 	public static function prepareFilter($value, $type)
 	{
-		/* select nebo boolean muze byt pouze equal */
-		if($type == self::SELECT || $type == self::BOOLEAN)
+		/* select, boolean a equal muze byt pouze equal */
+		if(($type == self::SELECT) || ($type == self::BOOLEAN) || ($type == self::EQUAL))
 			return array(
 				"condition" => self::EQUAL,
 				"value" => $value
