@@ -111,7 +111,7 @@
 		</tr>
 		{/if}
 	</tbody>
-	<tfoot>
+	<tfoot n:if="$control->hasActionForm() || $paginate">
 		<tr>
 			<td colspan="{$colsCount}" class="grid-bottom">
 				<span n:if="$control->hasActionForm()" class="grid-action-box">
