@@ -279,13 +279,13 @@ class Column extends \Nette\Application\UI\PresenterComponent
 	 * @return Column
 	 * @throws DuplicateEditableColumnException
 	 */
-	public function setDateEditable()
+	public function setDateEditable($readonly = false)
 	{
 		if($this->editable){
 			throw new DuplicateEditableColumnException("Column $this->name is already editable.");
 		}
 		$this->parent['gridForm'][$this->parent->name]['rowForm']->addText($this->name, NULL)->getControlPrototype()->addClass("grid-datepicker")->addClass("grid-editable");
-
+		if($readonly) $this->parent['gridForm'][$this->parent->name]['rowForm'][$this->name]->getControlPrototype()->readonly("readonly");
 		$this->editable = TRUE;
 
 		return $this;
@@ -367,9 +367,10 @@ class Column extends \Nette\Application\UI\PresenterComponent
 	/**
 	 * @return Column
 	 */
-	public function setDateFilter()
+	public function setDateFilter($readonly = false)
 	{
 		$this->parent['gridForm'][$this->parent->name]['filter']->addText($this->name, $this->label.":")->getControlPrototype()->class("grid-datepicker");
+		if($readonly) $this->parent['gridForm'][$this->parent->name]['filter'][$this->name]->getControlPrototype()->readonly("readonly");		
 		$this->filterType = FilterCondition::DATE;
 
 		return $this;
