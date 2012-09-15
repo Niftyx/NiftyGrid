@@ -32,6 +32,31 @@ class SubGrid extends \Nette\Application\UI\PresenterComponent
 	/** @var callback|string */
 	public $cellStyle;
 
+	/** @var callback|bools */
+    	private $show = TRUE;
+    
+	/**
+	 * @param bool $show
+	 * @return Subgrid
+	 */
+	public function setShow($show)
+	{
+		$this->show = $show;
+		return $this;
+	}
+	
+	/**
+	 * @param array $row
+	 * @return bool
+	 */
+	private function getShow($row)
+	{
+		if(is_callable($this->show)){
+			return call_user_func($this->show, $row);
+		}
+		return $this->show;
+	} 
+	
 	/**
 	 * @param string $name
 	 * @return SubGrid
@@ -187,15 +212,17 @@ class SubGrid extends \Nette\Application\UI\PresenterComponent
 	 */
 	public function render($row)
 	{
-		$el = \Nette\Utils\Html::el("a")
-			->href($this->getLink($row))
-			->addClass($this->getClass($row))
-			->addClass("grid-button")
-			->setTitle($this->getLabel($row));
-
-		if($this->ajax){
-			$el->addClass("grid-ajax");
+		if($this->getShow($row)){
+			$el = \Nette\Utils\Html::el("a")
+				->href($this->getLink($row))
+				->addClass($this->getClass($row))
+				->addClass("grid-button")
+				->setTitle($this->getLabel($row));
+	
+			if($this->ajax){
+				$el->addClass("grid-ajax");
+			}
+			echo $el;
 		}
-		echo $el;
 	}
 }
