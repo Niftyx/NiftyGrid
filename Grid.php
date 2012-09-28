@@ -401,6 +401,11 @@ class Grid extends \Nette\Application\UI\Control
 	public function setSecondOrder($order, $way = 0)
 	{
 		if(!is_array($order)){
+			$orderExp = explode(" ", $order);
+			if(count($orderExp > 1){
+				$order = $orderExp[0];
+				$way = $orderExp[1];
+			}
 			if($way == 1 || strtoupper($way) == "ASC"){
 				$way = "ASC";
 			}else{
@@ -414,6 +419,11 @@ class Grid extends \Nette\Application\UI\Control
 						$order[$key][1] = "ASC";
 					}else{
 						$order[$key][1] = "DESC";
+					}
+				}else{
+					$orderExp = explode(" ", $value);
+					if(count($orderExp > 1){
+						$order[$key] = array($orderExp[0], $orderExp[1]);
 					}
 				}
 			}
