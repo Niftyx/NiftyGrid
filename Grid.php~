@@ -656,7 +656,7 @@ class Grid extends \Nette\Application\UI\Control
 				}
 				$this->dataSource->multipleOrderData($orders);
 			}elseif($second === true){
-				return $order;
+				$return $order;
 			}else{
 				$this->dataSource->orderData($order[0], $order[1]);
 			}
