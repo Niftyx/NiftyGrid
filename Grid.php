@@ -644,17 +644,22 @@ class Grid extends \Nette\Application\UI\Control
 			if(!is_array($order)) {
 				$order = explode(" ", $order);
 			}
-			if(is_array($order) && in_array($order[0], $this->getColumnNames()) && in_array($order[1], array("ASC", "DESC")) && $this['columns']->components[$order[0]]->isSortable()){
+			if(is_array($order) && is_array($order[0])){
+				foreach($order as $value){
+					$orders[] = $this->orderData($value, true);
+				}
+			}elseif(is_array($order) && in_array($order[0], $this->getColumnNames()) && in_array($order[1], array("ASC", "DESC")) && $this['columns']->components[$order[0]]->isSortable()){
 				$orders[] = $order;
-			}elseif(isset($order[2]) && $order[2] == "default" && in_array($order[1], array("ASC", "DESC"))){
+			}elseif(is_array($order) && isset($order[2]) && $order[2] == "default" && in_array($order[1], array("ASC", "DESC"))){
 				$orders[] = $order;
-			}
-			else{
+			}elseif(is_array($order) && in_array($order[1], array("ASC", "DESC"))){
+				$orders[] = $order;
+			}else{
 				throw new InvalidOrderException("Neplatné seřazení.");
 			}
 			if($this->hasSecondOrder() && $second === false){
 				if(is_array($this->secondOrder[0])){
-					foreach($this->secondOrder[0] as $secondOrder){
+					foreach($this->secondOrder as $secondOrder){
 						if($secondOrder[0] != $orders[0][0]){
 							$orders[] = $this->orderData($secondOrder, true);
 						}
