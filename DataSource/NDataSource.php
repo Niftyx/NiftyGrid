@@ -40,6 +40,13 @@ class NDataSource implements IDataSource
 		$this->data->order($by." ".$way);
 	}
 
+	public function multipleOrderData($orders)
+	{
+		foreach($orders as $order){
+			$this->data->order($order[0]." ".$order[1]);
+		}
+	}
+
 	public function limitData($limit, $offset)
 	{
 		$this->data->limit($limit, $offset);

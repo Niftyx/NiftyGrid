@@ -39,6 +39,9 @@ class Grid extends \Nette\Application\UI\Control
 	/** @var string */
 	protected $defaultOrder;
 
+	/** @var string */
+	protected $secondOrder;
+
 	/** @var IDataSource */
 	protected $dataSource;
 
@@ -135,8 +138,7 @@ class Grid extends \Nette\Application\UI\Control
 			$this->orderData($this->order);
 		}
 		if(!$this->hasActiveOrder() && $this->hasDefaultOrder() && $this->hasEnabledSorting()){
-			$order = explode(" ", $this->defaultOrder);
-			$this->dataSource->orderData($order[0], $order[1]);
+			$this->orderData($this->defaultOrder);
 		}
 		$this->count = $this->getCount();
 	}
@@ -380,7 +382,53 @@ class Grid extends \Nette\Application\UI\Control
 	 */
 	public function setDefaultOrder($order)
 	{
+		if(!is_array($order)){
+			$order = explode(" ", trim($order));
+		}
+		if($order[1] == 1 || strtoupper($order[1]) == "ASC"){
+			$order[1] = "ASC";
+		}else{
+			$order[1] = "DESC";
+		}
+		$order[2] = "default";
 		$this->defaultOrder = $order;
+	}
+
+	/**
+	 * @param mixed $order
+	 * @param mixed $way
+	 */
+	public function setSecondOrder($order, $way = 0)
+	{
+		if(!is_array($order)){
+			$orderExp = explode(" ", $order);
+			if(count($orderExp) > 1){
+				$order = $orderExp[0];
+				$way = $orderExp[1];
+			}
+			if($way == 1 || strtoupper($way) == "ASC"){
+				$way = "ASC";
+			}else{
+				$way = "DESC";
+			}
+			$this->secondOrder = array($order, $way);
+		}else{
+			foreach($order as $key => $value){
+				if(is_array($value)){
+					if($value[1] == 1 || strtoupper($value[1]) == "ASC"){
+						$order[$key][1] = "ASC";
+					}else{
+						$order[$key][1] = "DESC";
+					}
+				}else{
+					$orderExp = explode(" ", $value);
+					if(count($orderExp) > 1){
+						$order[$key] = array($orderExp[0], $orderExp[1]);
+					}
+				}
+			}
+			$this->secondOrder = $order;
+		}
 	}
 
 	/**
@@ -466,6 +514,14 @@ class Grid extends \Nette\Application\UI\Control
 	public function hasDefaultOrder()
 	{
 		return !empty($this->defaultOrder) ? TRUE : FALSE;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function hasSecondOrder()
+	{
+		return !empty($this->secondOrder) ? TRUE : FALSE;
 	}
 
 	/**
@@ -578,16 +634,50 @@ class Grid extends \Nette\Application\UI\Control
 
 	/**
 	 * @param string $order
+	 * @param bool $second
 	 * @throws InvalidOrderException
 	 */
-	protected function orderData($order)
+	protected function orderData($order, $second = false)
 	{
+		$orders = array();
 		try{
-			$order = explode(" ", $order);
-			if(in_array($order[0], $this->getColumnNames()) && in_array($order[1], array("ASC", "DESC")) && $this['columns']->components[$order[0]]->isSortable()){
-				$this->dataSource->orderData($order[0], $order[1]);
+			if(!is_array($order)) {
+				$order = explode(" ", $order);
+			}
+			$component = $order[0];
+			if(isset($this['columns']->components[$order[0]]) && isset($this['columns']->components[$order[0]]->tableName)){
+				$order[0] = $this['columns']->components[$order[0]]->tableName;
+			}
+			if(is_array($order) && is_array($order[0])){
+				foreach($order as $value){
+					$orders[] = $this->orderData($value, true);
+				}
+			}elseif(is_array($order) && in_array($component, $this->getColumnNames()) && in_array($order[1], array("ASC", "DESC")) && $this['columns']->components[$component]->isSortable()){
+				$orders[] = $order;
+			}elseif(is_array($order) && isset($order[2]) && $order[2] == "default" && in_array($order[1], array("ASC", "DESC"))){
+				$orders[] = $order;
+			}elseif(is_array($order) && in_array($order[1], array("ASC", "DESC"))){
+				$orders[] = $order;
 			}else{
 				throw new InvalidOrderException("Neplatné seřazení.");
+			}
+			if($this->hasSecondOrder() && $second === false){
+				if(is_array($this->secondOrder[0])){
+					foreach($this->secondOrder as $secondOrder){
+						if(!in_array($secondOrder, $orders) || empty($orders)){
+							$orders[] = $this->orderData($secondOrder, true);
+						}
+					}
+				}else{
+					if(!in_array($this->secondOrder, $orders) || empty($orders)){
+						$orders[] = $this->orderData($this->secondOrder, true);
+					}
+				}
+				$this->dataSource->multipleOrderData($orders);
+			}elseif($second === true){
+				return $order;
+			}else{
+				$this->dataSource->orderData($order[0], $order[1]);
 			}
 		}
 		catch(InvalidOrderException $e){

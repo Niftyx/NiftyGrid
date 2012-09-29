@@ -35,6 +35,12 @@ interface IDataSource
 	public function orderData($by, $way);
 
 	/**
+	 * Sort data by given columns
+	 * @param array $orders
+	 */
+	public function multipleOrderData($orders);
+
+	/**
 	 * Limit data to select
 	 * @param int $limit
 	 * @param int $offset
