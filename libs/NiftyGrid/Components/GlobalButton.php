@@ -26,6 +26,9 @@ class GlobalButton extends \Nette\Application\UI\PresenterComponent
 	/** @var bool */
 	private $ajax = TRUE;
 
+	/** @var string */
+	private $text;
+
 	/**
 	 * @param string $label
 	 * @return Button
@@ -81,6 +84,17 @@ class GlobalButton extends \Nette\Application\UI\PresenterComponent
 		return $this;
 	}
 
+	/**
+	 * @param string $text
+	 * @return Button
+	 */
+	public function setText($text)
+	{
+		$this->text = $text;
+
+		return $this;
+	}
+
 	public function render()
 	{
 		$el = Html::el("a")
@@ -88,7 +102,8 @@ class GlobalButton extends \Nette\Application\UI\PresenterComponent
 			->setClass($this->class)
 			->addClass("grid-button")
 			->addClass("grid-global-button")
-			->setTitle($this->label);
+			->setTitle($this->label)
+			->setText($this->text);
 
 		if($this->getName() == Grid::ADD_ROW) {
 			$el->addClass("grid-add-row");
