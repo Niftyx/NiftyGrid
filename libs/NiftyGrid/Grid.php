@@ -77,6 +77,9 @@ abstract class Grid extends \Nette\Application\UI\Control
 
 	/** @var string */
 	protected $templatePath;
+	
+	/** @var string */
+	protected $paginatorTemplatePath;
 
 	/** @var string */
 	public $messageNoRecords = 'Žádné záznamy';
@@ -977,4 +980,12 @@ abstract class Grid extends \Nette\Application\UI\Control
 
 		return null;
 	}
+	
+	/**
+         * Sets paginator template path
+         * @param string $pagiantorTemplatePath
+         */
+        public function setPaginatorTemplate($pagiantorTemplatePath){
+            $this->paginatorTemplatePath = $pagiantorTemplatePath;
+        }
 }
