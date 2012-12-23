@@ -116,7 +116,14 @@ abstract class Grid extends \Nette\Application\UI\Control
 		if($this->hasActionForm()){
 			$actions = array();
 			foreach($this['actions']->components as $name => $action){
-				$actions[$name] = $action->getAction();
+                if($action->group)
+                {
+                    $actions[$action->group][$name] = $action->getAction();
+                }
+                else
+                {
+                    $actions[$name] = $action->getAction();
+                }
 			}
 			$this['gridForm'][$this->name]['action']['action_name']->setItems($actions);
 		}

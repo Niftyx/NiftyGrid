@@ -29,6 +29,9 @@ class Action extends \Nette\Application\UI\PresenterComponent
 	/** @var boolean */
 	public $ajax = TRUE;
 
+	/** @var string */
+	public $group;
+    
 	/**
 	 * @param string $name
 	 * @return Action
@@ -114,5 +117,16 @@ class Action extends \Nette\Application\UI\PresenterComponent
 		}
 
 		return $option;
+	}
+    
+	/**
+	 * @param string $group
+	 * @return Action
+	 */
+	public function setGroup($group)
+	{
+		$this->group = $group;
+
+		return $this;
 	}
 }
