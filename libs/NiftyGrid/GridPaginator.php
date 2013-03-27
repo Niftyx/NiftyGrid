@@ -21,16 +21,21 @@ class GridPaginator extends \Nette\Application\UI\Control
 	*/
 	public $paginator;
 
-	public function __construct()
+	/** @var string */
+	protected $templatePath = null;
+
+
+	public function __construct($templatePath = null)
 	{
 		parent::__construct();
-		$this->paginator = new Paginator;
+		$this->paginator    = new Paginator;
+		$this->templatePath = $templatePath;
 	}
 
 	public function render()
 	{
 		$this->template->paginator = $this->paginator;
-		$this->template->setFile(__DIR__ . '/../../templates/paginator.latte');
+		$this->template->setFile(!empty($this->templatePath) ? $this->templatePath : __DIR__ . '/../../templates/paginator.latte');
 		$this->template->render();
 	}
 
@@ -42,4 +47,13 @@ class GridPaginator extends \Nette\Application\UI\Control
 		parent::loadState($params);
 		$this->paginator->page = $this->page;
 	}
+
+	/**
+	 * @param string $templatePath
+	 */
+	protected function setTemplate($templatePath)
+	{
+		$this->templatePath = $templatePath;
+	}
+
 }
