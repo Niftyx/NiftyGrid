@@ -28,8 +28,8 @@ class GridPaginator extends \Nette\Application\UI\Control
 	public function __construct($templatePath = null)
 	{
 		parent::__construct();
-		$this->paginator    = new Paginator;
-		$this->templatePath = $templatePath;
+		$this->paginator = new Paginator;
+		$this->setTemplate($templatePath);
 	}
 
 	public function render()
@@ -51,7 +51,7 @@ class GridPaginator extends \Nette\Application\UI\Control
 	/**
 	 * @param string $templatePath
 	 */
-	protected function setTemplate($templatePath)
+	public function setTemplate($templatePath)
 	{
 		$this->templatePath = $templatePath;
 	}
