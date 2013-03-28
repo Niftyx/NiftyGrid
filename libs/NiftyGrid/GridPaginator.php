@@ -16,9 +16,7 @@ class GridPaginator extends \Nette\Application\UI\Control
 	/** @persistent int */
 	public $page = 1;
 
-	/**
-	 * @var Paginator
-	*/
+	/** @var Paginator */
 	public $paginator;
 
 	/** @var string */
