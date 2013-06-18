@@ -12,11 +12,11 @@ $(function(){
         }
     });
 
-    $(".grid-flash-hide").live("click", function(){
+    $(document).on("click", ".grid-flash-hide", function(){
         $(this).parent().parent().fadeOut(300);
     });
 
-    $(".grid-select-all").live("click", function(){
+    $(document).on("click", ".grid-select-all", function(){
         var checkboxes =  $(this).parents("thead").siblings("tbody").children("tr:not(.grid-subgrid-row)").find("td input:checkbox.grid-action-checkbox");
         if($(this).is(":checked")){
             $(checkboxes).attr("checked", "checked");
@@ -25,17 +25,17 @@ $(function(){
         }
     });
 
-    $('.grid a.grid-ajax:not(.grid-confirm)').live('click', function (event) {
+    $(document).on('click', '.grid a.grid-ajax:not(.grid-confirm)', function (event) {
         event.preventDefault();
         $.get(this.href);
     });
 
-    $('.grid a.grid-confirm:not(.grid-ajax)').live('click', function (event) {
+    $(document).on('click', '.grid a.grid-confirm:not(.grid-ajax)', function (event) {
         var answer = confirm($(this).data("grid-confirm"));
         return answer;
     });
 
-    $('.grid a.grid-confirm.grid-ajax').live('click', function (event) {
+    $(document).on('click', '.grid a.grid-confirm.grid-ajax', function (event) {
         event.preventDefault();
         var answer = confirm($(this).data("grid-confirm"));
         if(answer){
@@ -43,12 +43,12 @@ $(function(){
         }
     });
 
-    $(".grid-gridForm").find("input[type=submit]").live("click", function(){
+    $(document).on("click", ".grid-gridForm input[type=submit]", function(){
         $(this).addClass("grid-gridForm-clickedSubmit");
     });
 
 
-    $(".grid-gridForm").live("submit", function(event){
+    $(document).on("submit", ".grid-gridForm", function(event){
         var button = $(".grid-gridForm-clickedSubmit");
         $(button).removeClass("grid-gridForm-clickedSubmit");
         if($(button).data("select")){
@@ -76,7 +76,7 @@ $(function(){
         }
     });
 
-    $(".grid-autocomplete").live('keydown.autocomplete', function(){
+    $(document).on('keydown.autocomplete', ".grid-autocomplete", function(){
         var gridName = $(this).data("gridname");
         var column = $(this).data("column");
         var link = $(this).data("link");
@@ -97,7 +97,7 @@ $(function(){
         });
     });
 
-    $(".grid-changeperpage").live("change", function(){
+    $(document).on("change", ".grid-changeperpage", function(){
         $.get($(this).data("link"), $(this).data("gridname")+"-perPage="+$(this).val());
     });
 
@@ -147,14 +147,14 @@ $(function(){
         hidePerPageSubmit();
     });
 
-    $("input.grid-editable").live("keypress", function(e) {
+    $(document).on("keypress", "input.grid-editable", function(e) {
         if (e.keyCode == '13') {
             e.preventDefault();
             $("input[type=submit].grid-editable").click();
         }
     });
 
-    $("table.grid tbody tr:not(.grid-subgrid-row) td.grid-data-cell").live("dblclick", function(e) {
+    $(document).on("dblclick", "table.grid tbody tr:not(.grid-subgrid-row) td.grid-data-cell", function(e) {
         $(this).parent().find("a.grid-editable:first").click();
     });
 });
