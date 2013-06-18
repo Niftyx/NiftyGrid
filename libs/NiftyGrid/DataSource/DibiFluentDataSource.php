@@ -1,10 +1,8 @@
 <?php
 
-namespace NiftyGrid;
+namespace NiftyGrid\DataSource;
 
-use Nette,
-	DibiFluent;
-
+use NiftyGrid\FilterCondition;
 
 
 /**
@@ -25,9 +23,9 @@ use Nette,
  * @licence LGPL
  * @see     https://github.com/Niftyx/NiftyGrid
  */
-class DibiFluentDataSource extends Nette\Object implements IDataSource
+class DibiFluentDataSource extends \Nette\Object implements IDataSource
 {
-	/** @var DibiFluent */
+	/** @var \DibiFluent */
 	private $fluent;
 
 	/** @var string  Primary key column name */
@@ -42,10 +40,10 @@ class DibiFluentDataSource extends Nette\Object implements IDataSource
 
 
 	/**
-	 * @param DibiFluent
+	 * @param \DibiFluent
 	 * @param string  Primary key column name
 	 */
-	public function __construct(DibiFluent $fluent, $pKeyColumn)
+	public function __construct(\DibiFluent $fluent, $pKeyColumn)
 	{
 		$this->fluent = clone $fluent;
 		$this->pKeyColumn = $pKeyColumn;
