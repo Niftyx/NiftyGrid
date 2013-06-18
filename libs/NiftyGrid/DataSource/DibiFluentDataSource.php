@@ -2,6 +2,8 @@
 
 namespace NiftyGrid\DataSource;
 
+use NiftyGrid\FilterCondition;
+
 
 /**
  * DibiFluent datasource for Nifty's grid.
