@@ -631,6 +631,7 @@ abstract class Grid extends \Nette\Application\UI\Control
 		}else{
 			$count = $this->dataSource->getCount();
 			$this->getPaginator()->itemCount = $count;
+			$this->getPaginator()->itemsPerPage = $count;
 			return $count;
 		}
 	}
