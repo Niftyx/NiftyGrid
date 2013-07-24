@@ -933,7 +933,7 @@ abstract class Grid extends \Nette\Application\UI\Control
 					$input = $this['gridForm'][$this->name]['rowForm'][$name];
 					if($input instanceof \Nette\Forms\Controls\SelectBox){
 						$items = $this['gridForm'][$this->name]['rowForm'][$name]->getItems();
-						if(in_array($row[$name], $items)){
+						if(!array_key_exists($row[$name], $items)){
 							$row[$name] = array_search($row[$name], $items);
 						}
 					}
