@@ -1,115 +1,6 @@
-$(function(){
-    $.ajaxSetup({
-        success: function(data){
-            if(data.redirect){
-                $.get(data.redirect);
-            }
-            if(data.snippets){
-                for (var snippet in data.snippets){
-                    $("#"+snippet).html(data.snippets[snippet]);
-                }
-            }
-        }
-    });
-
-    $(".grid-flash-hide").live("click", function(){
-        $(this).parent().parent().fadeOut(300);
-    });
-
-    $(".grid-select-all").live("click", function(){
-        var checkboxes =  $(this).parents("thead").siblings("tbody").children("tr:not(.grid-subgrid-row)").find("td input:checkbox.grid-action-checkbox");
-        if($(this).is(":checked")){
-            $(checkboxes).attr("checked", "checked");
-        }else{
-            $(checkboxes).removeAttr("checked");
-        }
-    });
-
-    $('.grid a.grid-ajax:not(.grid-confirm)').live('click', function (event) {
-        event.preventDefault();
-        $.get(this.href);
-    });
-
-    $('.grid a.grid-confirm:not(.grid-ajax)').live('click', function (event) {
-        var answer = confirm($(this).data("grid-confirm"));
-        return answer;
-    });
-
-    $('.grid a.grid-confirm.grid-ajax').live('click', function (event) {
-        event.preventDefault();
-        var answer = confirm($(this).data("grid-confirm"));
-        if(answer){
-            $.get(this.href);
-        }
-    });
-
-    $(".grid-gridForm").find("input[type=submit]").live("click", function(){
-        $(this).addClass("grid-gridForm-clickedSubmit");
-    });
-
-
-    $(".grid-gridForm").live("submit", function(event){
-        var button = $(".grid-gridForm-clickedSubmit");
-        $(button).removeClass("grid-gridForm-clickedSubmit");
-        if($(button).data("select")){
-            var selectName = $(button).data("select");
-            var option = $("select[name=\""+selectName+"\"] option:selected");
-            if($(option).data("grid-confirm")){
-                var answer = confirm($(option).data("grid-confirm"));
-                if(answer){
-                    if($(option).hasClass("grid-ajax")){
-                        event.preventDefault();
-                        $.post(this.action, $(this).serialize()+"&"+$(button).attr("name")+"="+$(button).val());
-                    }
-                }else{
-                    return false;
-                }
-            }else{
-                if($(option).hasClass("grid-ajax")){
-                    event.preventDefault();
-                    $.post(this.action, $(this).serialize()+"&"+$(button).attr("name")+"="+$(button).val());
-                }
-            }
-        }else{
-            event.preventDefault();
-            $.post(this.action, $(this).serialize()+"&"+$(button).attr("name")+"="+$(button).val());
-        }
-    });
-
-    $(".grid-autocomplete").live('keydown.autocomplete', function(){
-        var gridName = $(this).data("gridname");
-        var column = $(this).data("column");
-        var link = $(this).data("link");
-        $(this).autocomplete({
-            source: function(request, response) {
-                $.ajax({
-                    url: link,
-                    data: gridName+'-term='+request.term+'&'+gridName+'-column='+column,
-                    dataType: "json",
-                    method: "post",
-                    success: function(data) {
-                        response(data.payload);
-                    }
-                });
-            },
-            delay: 100,
-            open: function() { $('.ui-menu').width($(this).width()) }
-        });
-    });
-
-    $(".grid-changeperpage").live("change", function(){
-        $.get($(this).data("link"), $(this).data("gridname")+"-perPage="+$(this).val());
-    });
-
-    function hidePerPageSubmit()
-    {
-        $(".grid-perpagesubmit").hide();
-    }
-    hidePerPageSubmit();
-
-    function setDatepicker()
-    {
-        if ( ! $.datepicker ) return;
+(function (undefined) {
+    function niftyGridInitialize() {
+        if (!$.datepicker) return;
 
         $.datepicker.regional['cs'] = {
             closeText: 'Zavřít',
@@ -129,32 +20,162 @@ $(function(){
             firstDay: 1,
             isRTL: false,
             showMonthAfterYear: false,
-            yearSuffix: ''};
+            yearSuffix: ''
+        };
         $.datepicker.setDefaults($.datepicker.regional['cs']);
+    }
 
-        $(".grid-datepicker").each(function(){
-            if(($(this).val() != "")){
-                var date = $.datepicker.formatDate('yy-mm-dd', new Date($(this).val()));
+    function niftyGrid(ajax) {
+        $('.grid-flash-hide').off('click.niftygrid').on('click.niftygrid', function () {
+            $(this).parent().parent().fadeOut(300);
+        });
+
+        $('.grid-select-all').off('click.niftygrid').on('click.niftygrid', function () {
+            var checkboxes = $(this).parents('thead').siblings('tbody').children('tr:not(.grid-subgrid-row)').find('td input:checkbox.grid-action-checkbox');
+            if ($(this).is(':checked')) {
+                checkboxes.attr('checked', 'checked');
+            } else {
+                checkboxes.removeAttr('checked');
             }
-            $(this).datepicker();
-            $(this).datepicker({ constrainInput: false});
+        });
+
+        $('.grid a.grid-ajax:not(.grid-confirm)').off('click.niftygrid').on('click.niftygrid', function (e) {
+            ajax({}, this, e);
+        });
+
+        $('.grid a.grid-confirm:not(.grid-ajax)').off('click.niftygrid').on('click.niftygrid', function () {
+            return confirm($(this).data('grid-confirm'));
+        });
+
+        $('.grid a.grid-confirm.grid-ajax').off('click.niftygrid').on('click.niftygrid', function (e) {
+            e.preventDefault();
+            var answer = confirm($(this).data('grid-confirm'));
+            if (answer) {
+                ajax({}, this, e);
+            }
+        });
+
+        $('.grid-gridForm').find('input[type=submit]').off('click.niftygrid').on('click.niftygrid', function () {
+            $(this).addClass('grid-gridForm-clickedSubmit');
+        });
+
+        $('.grid-gridForm').off('submit.niftygrid').on('submit.niftygrid', function (e) {
+            var button = $(this).find('.grid-gridForm-clickedSubmit');
+            button.removeClass('grid-gridForm-clickedSubmit');
+            if (button.data('select')) {
+                var selectName = button.data('select');
+                var option = $('select[name="' + selectName + '"] option:selected');
+                var answer = option.data("grid-confirm");
+                if (answer) {
+                    if (confirm(answer)) {
+                        if (option.hasClass('grid-ajax')) {
+                            ajax({}, this, e);
+                        }
+                    } else {
+                        return false;
+                    }
+                } else {
+                    if (option.hasClass('grid-ajax')) {
+                        ajax({}, this, e);
+                    }
+                }
+            } else {
+                ajax({}, this, e);
+            }
+        });
+
+        $('.grid-autocomplete').off('keydown.autocomplete').on('keydown.autocomplete', function () {
+            var autocomplete = $(this);
+            var gridName = autocomplete.data('gridname');
+            var column = autocomplete.data('column');
+            var link = autocomplete.data('link');
+            autocomplete.autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: link,
+                        data: gridName + '-term=' + request.term + '&' + gridName + '-column=' + column,
+                        dataType: 'json',
+                        method: 'post'
+                    }).done(function(data) {
+                        response(data.payload);
+                    });
+                },
+                delay: 100,
+                open: function() {
+                    $('.ui-menu').width($(this).width());
+                }
+            });
+        });
+
+        $('.grid-changeperpage').off('change.niftygrid').on('change.niftygrid', function () {
+            ajax({
+                type: 'get',
+                url: $(this).data('link'),
+                data: $(this).data('gridname') + '-perPage=' + $(this).val()
+            });
+        });
+
+        $('.grid-perpagesubmit').hide();
+
+        if ($.datepicker) {
+            $('.grid-datepicker').each(function () {
+                if ($(this).val() != '') {
+                    var date = $.datepicker.formatDate('yy-mm-dd', new Date($(this).val()));
+                }
+                $(this).datepicker();
+                $(this).datepicker({
+                    constrainInput: false
+                });
+            });
+        }
+
+        $('input.grid-editable').off('keypress.niftygrid').on('keypress.niftygrid', function (e) {
+            if (e.keyCode == '13') {
+                e.preventDefault();
+                $('input[type=submit].grid-editable').click();
+            }
+        });
+
+        $('table.grid tbody tr:not(.grid-subgrid-row) td.grid-data-cell').off('dblclick.niftygrid').on('dblclick.niftygrid', function (e) {
+            $(this).parent().find('a.grid-editable:first').click();
         });
     }
-    setDatepicker();
 
-    $(this).ajaxStop(function(){
-        setDatepicker();
-        hidePerPageSubmit();
-    });
-
-    $("input.grid-editable").live("keypress", function(e) {
-        if (e.keyCode == '13') {
+    if (typeof $.nette.ajax !== 'undefined') {
+        $.nette.ajax('niftyGrid', {
+            init: niftyGridInitialize,
+            load: function () {
+                niftyGrid($.nette.ajax);
+            }
+        });
+    } else {
+        function ajax(params, ui, e) {
             e.preventDefault();
-            $("input[type=submit].grid-editable").click();
-        }
-    });
+            if ($(ui).is('form')) {
+                var button = $(ui).find('.grid-gridForm-clickedSubmit');
+                params.url = ui.action;
+                params.type = 'post';
+                params.data = $(ui).serialize() + '&' + button.attr('name') + '=' + button.val();
+            } else {
+                params.url = ui.href;
+                params.type = 'get';
+            }
+            return $.ajax(params).done(function () {
+                if (data.redirect) {
+                    $.get(data.redirect);
+                }
+                if (data.snippets) {
+                    for (var snippet in data.snippets) {
+                        $('#' + snippet).html(data.snippets[snippet]);
+                    }
+                }
+                niftyGrid(ajax);
+            });
+        };
 
-    $("table.grid tbody tr:not(.grid-subgrid-row) td.grid-data-cell").live("dblclick", function(e) {
-        $(this).parent().find("a.grid-editable:first").click();
-    });
-});
+        niftyGridInitialize();
+        $(function () {
+            niftyGrid(ajax);
+        });
+    }
+})();
