@@ -13,7 +13,7 @@ use Nette;
 use NiftyGrid,
 	NiftyGrid\Grid;
 
-class SubGrid extends \Nette\Application\UI\PresenterComponent
+class SubGrid extends \Nette\Application\UI\Component
 {
 	/** @var string */
 	public $name;
@@ -23,6 +23,8 @@ class SubGrid extends \Nette\Application\UI\PresenterComponent
 
 	/** @var callback|string */
 	private $link;
+
+	private $grid;
 
 	/** @var callback */
 	private $settings;

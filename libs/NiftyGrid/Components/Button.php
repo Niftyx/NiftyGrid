@@ -241,7 +241,7 @@ class Button extends \Nette\Application\UI\PresenterComponent
 
 		if($this->hasConfirmationDialog()){
 			$el->addClass("grid-confirm")
-				->addData("grid-confirm", $this->getConfirmationDialog($row));
+				->addAttribute("grid-confirm", $this->getConfirmationDialog($row));
 		}
 
 		if($this->ajax){

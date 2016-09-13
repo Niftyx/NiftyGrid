@@ -15,7 +15,7 @@ use NiftyGrid,
 	NiftyGrid\FilterCondition;
 
 
-class Column extends \Nette\Application\UI\PresenterComponent
+class Column extends \Nette\Application\UI\Component
 {
 	/** @var string */
 	public $name;
@@ -31,6 +31,9 @@ class Column extends \Nette\Application\UI\PresenterComponent
 
 	/** @var int */
 	public $truncate;
+
+	/** @var callback */
+	public $renderer;
 
 	/** @var callback */
 	public $renderCallback;
@@ -207,9 +210,9 @@ class Column extends \Nette\Application\UI\PresenterComponent
 		}
 		$this->parent['gridForm'][$this->parent->name]['filter'][$this->name]->getControlPrototype()
 			->addClass("grid-autocomplete")
-			->addData("column", $this->name)
-			->addData("gridName", $this->parent->getGridPath())
-			->addData("link",$this->parent->link("autocomplete!"));
+			->addAttribute("column", $this->name)
+			->addAttribute("gridName", $this->parent->getGridPath())
+			->addAttribute("link",$this->parent->link("autocomplete!"));
 
 		$this->autocomplete = TRUE;
 
